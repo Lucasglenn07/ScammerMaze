@@ -1,1 +1,2 @@
 # ScammerMaze
+WIP: TimeSink scaffold
