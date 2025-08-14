@@ -50,6 +50,83 @@ export const COVER_STORIES = {
 
 export const MAZE_TEMPLATES: MazeTemplate[] = [
   {
+    id: 'basic-looping-maze',
+    name: 'Basic Looping Maze',
+    description: 'A simple maze with 5 different tasks that loops continuously',
+    coverStory: COVER_STORIES.invoice.message,
+    difficulty: 'easy',
+    estimatedTimeWasted: '10-20 minutes',
+    trials: [
+      {
+        position: 0,
+        kind: 'image_hunt',
+        config: {
+          difficulty: 1,
+          tiles: 16,
+          pattern: [2, 7, 11, 14],
+          instruction: 'Select all images containing traffic lights',
+          minMs: 3000
+        }
+      },
+      {
+        position: 1,
+        kind: 'drag_sum',
+        config: {
+          difficulty: 2,
+          target: 100,
+          exactly: 4,
+          items: [15, 25, 30, 35, 40, 45],
+          instruction: 'Drag exactly 4 items that sum to 100'
+        }
+      },
+      {
+        position: 2,
+        kind: 'loading_abyss',
+        config: {
+          minMs: 15000,
+          resetOnBlur: true,
+          message: 'Processing verification...',
+          checkpoints: [5000, 10000, 12000]
+        }
+      },
+      {
+        position: 3,
+        kind: 'multi_layer_captcha',
+        config: {
+          difficulty: 2,
+          steps: [
+            { type: 'image', expectedAnswer: 'bridge' },
+            { type: 'math', expectedAnswer: 42 }
+          ]
+        }
+      },
+      {
+        position: 4,
+        kind: 'slow_reveal',
+        config: {
+          difficulty: 3,
+          revealMs: 20000,
+          image: 'captcha-text',
+          expectedAnswer: 'VERIFY'
+        }
+      }
+    ],
+    edges: [
+      {
+        fromPosition: 4,
+        toPosition: 0,
+        condition: { loopback: true, chance: 0.8 }
+      }
+    ],
+    settings: {
+      theme: 'business',
+      allowSkip: false,
+      showHints: false,
+      enableSounds: true,
+      coverStory: COVER_STORIES.invoice.message
+    }
+  },
+  {
     id: 'invoice-verification',
     name: 'Invoice Verification',
     description: 'Classic payment verification flow with progressive difficulty',

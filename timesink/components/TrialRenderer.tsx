@@ -5,6 +5,7 @@ import { ImageHunt } from './trials/ImageHunt';
 import { DragSum } from './trials/DragSum';
 import { LoadingAbyss } from './trials/LoadingAbyss';
 import { MultiLayerCaptcha } from './trials/MultiLayerCaptcha';
+import { SlowReveal } from './trials/SlowReveal';
 
 // Import other trial components as they're created
 // import { TracePath } from './trials/TracePath';
@@ -116,7 +117,13 @@ export function TrialRenderer({ trial, sessionId, onComplete, onTimeUpdate }: Tr
       return <PlaceholderTrial trialKind="Pixel Perfect Click" onSubmit={handleSubmit} />;
       
     case 'slow_reveal':
-      return <PlaceholderTrial trialKind="Slow Reveal" onSubmit={handleSubmit} />;
+      return (
+        <SlowReveal 
+          config={trial.config}
+          onSubmit={handleSubmit}
+          onTimeUpdate={handleTimeUpdate}
+        />
+      );
       
     case 'invisible_maze':
       return <PlaceholderTrial trialKind="Invisible Maze" onSubmit={handleSubmit} />;

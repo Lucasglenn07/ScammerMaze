@@ -113,9 +113,16 @@ export function LoadingAbyss({ config, onSubmit, onTimeUpdate }: LoadingAbyssPro
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-sm border border-gray-200">
       <div className="text-center">
-        <h2 className="text-xl font-semibold mb-6">Please Wait</h2>
+        <div className="flex items-center justify-center mb-6">
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-900">Processing Transaction</h2>
+        </div>
         
         {/* Main Progress Circle */}
         <div className="relative inline-block mb-6">
@@ -151,8 +158,11 @@ export function LoadingAbyss({ config, onSubmit, onTimeUpdate }: LoadingAbyssPro
         </div>
 
         {/* Status Message */}
-        <p className="text-lg text-gray-600 mb-4">
+        <p className="text-lg text-gray-700 mb-4">
           {getProgressMessage()}
+        </p>
+        <p className="text-sm text-gray-500 mb-6">
+          Please do not close this window or navigate away
         </p>
 
         {/* Fake Progress Steps */}
@@ -180,13 +190,21 @@ export function LoadingAbyss({ config, onSubmit, onTimeUpdate }: LoadingAbyssPro
 
         {/* Warnings */}
         {config.resetOnBlur && !isComplete && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
-            <p className="text-sm text-yellow-800">
-              ⚠️ Do not leave this page or the verification will restart
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div className="flex items-center">
+              <svg className="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+              <p className="text-sm text-red-800 font-medium">
+                Security Alert: Do not leave this page
+              </p>
+            </div>
+            <p className="text-xs text-red-700 mt-1">
+              Leaving this page will restart the verification process for security reasons
             </p>
             {blurEvents > 0 && (
-              <p className="text-xs text-yellow-700 mt-1">
-                Page left {blurEvents} time{blurEvents !== 1 ? 's' : ''}
+              <p className="text-xs text-red-600 mt-2 font-medium">
+                ⚠️ Page left {blurEvents} time{blurEvents !== 1 ? 's' : ''} - verification restarted
               </p>
             )}
           </div>
@@ -209,11 +227,20 @@ export function LoadingAbyss({ config, onSubmit, onTimeUpdate }: LoadingAbyssPro
         {/* Completion Message */}
         {isComplete && (
           <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-            <p className="text-green-800">
-              ✓ Verification process completed successfully
-            </p>
+            <div className="flex items-center justify-center">
+              <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <p className="text-green-800 font-medium">
+                Transaction verification completed successfully
+              </p>
+            </div>
           </div>
         )}
+        
+        <p className="text-xs text-gray-400 mt-4">
+          Secure banking protocols in place
+        </p>
       </div>
     </div>
   );

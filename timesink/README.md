@@ -1,305 +1,104 @@
-# TimeSink - Scammer Maze Web App
+# TimeSink - Scammer Deterrence Research Platform
 
-TimeSink is a web application for creating and deploying "mazes" designed to waste scammers' time. Users create verification workflows with deliberately frustrating elements, then share honey URLs that lead scammers through time-consuming tasks.
+TimeSink is a research platform for creating and deploying verification mazes designed to waste scammers' time. Build custom workflows with deliberately frustrating elements and track the time wasted.
 
 ## Features
 
-### Core Functionality
-- **Maze Builder**: Drag-and-drop interface for creating custom verification flows
-- **16 Trial Types**: From simple image selection to complex multi-layer puzzles
-- **Progress Illusion**: Shows "1-10 complete" while actually requiring 20+ steps
-- **Honey URLs**: Public entry points (`/honey/[slug]`) for scammers
-- **Session Recording**: Full rrweb session replay capability
-- **Time Tracking**: Accurate active time measurement with automation detection
-- **7-Day Retention**: Automatic data cleanup after 7 days
+### 🎯 Maze Builder (Zapier-like Interface)
+- **Drag-and-Drop Interface**: Create custom mazes by dragging trial components from the library
+- **Trial Library**: 5+ different trial types with configurable difficulty levels
+- **Real-time Configuration**: Adjust trial settings and difficulty in real-time
+- **Loop Controls**: Enable looping with configurable loop chances
+- **Visual Flow**: See your maze flow with connected trial blocks
+- **Save & Preview**: Save your custom mazes and preview them before deployment
 
-### Privacy & Ethics
-- **No PII Collection**: IPs bucketed to /24 (IPv4) or /48 (IPv6)
-- **Hashed User Agents**: No raw browser fingerprints stored
-- **Automatic Cleanup**: All data auto-deleted after 7 days
-- **Abuse Deterrence**: Clear footer indicating research purpose
+### 🏦 Financial Portal Styling
+All scammer sites now have the look and feel of legitimate secure financial portals:
+- **Professional Design**: Clean, modern interface with banking-grade aesthetics
+- **Security Indicators**: SSL badges, security icons, and trust signals
+- **Progress Indicators**: Professional loading bars and verification steps
+- **Error Handling**: Legitimate-looking error messages and security alerts
+- **Responsive Design**: Works seamlessly across all devices
 
-### Trial Types Implemented
+### 📊 Trial Types Available
+1. **Image Hunt** - Select images matching criteria
+2. **Drag Sum** - Drag items to match target sum
+3. **Loading Abyss** - Extended loading with progress
+4. **Multi-Layer CAPTCHA** - Multiple verification steps
+5. **Slow Reveal** - Gradually reveal verification content
 
-**Baseline Trials:**
-1. **Image Hunt** - Pattern tile selection with minimum time requirements
-2. **Drag Sum** - Combine numbers to exact target with item count restrictions
-3. **Loading Abyss** - Extended fake progress with blur detection
-4. **Multi-Layer Captcha** - 3-step verification that restarts on any failure
-5. **Trace Path** - Canvas path tracing with velocity validation
-6. **Audio Gate** - Timestamp-based audio interaction
+### 🔄 Basic Looping Maze Template
+A pre-built template with 5 different tasks that loops continuously:
+- Image verification
+- Transaction verification
+- Processing verification
+- Multi-factor authentication
+- Security code verification
 
-**High-Frustration Trials:**
-7. **Color Gradient Match** - Exact RGB matching among similar colors
-8. **Pixel Perfect Click** - Hidden targets with ±3px tolerance
-9. **Slow Reveal** - 60+ second image reveal before solvable
-10. **Invisible Maze** - Navigate by sound cues only
-11. **Math Chain** - Sequential problems with mandatory delays
-12. **Document Review** - Scroll through pages to find buried answers
-13. **Keypress Combo** - Timed key sequences with ±50ms windows
-14. **Video Frame Search** - Find specific timestamps without skipping
-15. **Captcha Loopback** - Rule mutations that reset progress
-16. **Looped Almost Done** - 50%+ failure rate on final steps
-
-## Setup Instructions
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ and pnpm
-- PostgreSQL database
-- Redis instance
-- S3-compatible storage (Cloudflare R2 recommended)
-- SMTP server for email authentication
+- Node.js 18+ 
+- npm or yarn
 
-### 1. Clone and Install
+### Installation
 ```bash
-git clone <repository-url>
 cd timesink
-pnpm install
+npm install
 ```
 
-### 2. Environment Configuration
-Copy `.env.local.example` to `.env.local` and configure:
-
-```env
-# Database
-DATABASE_URL="postgresql://username:password@localhost:5432/timesink"
-
-# NextAuth
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-random-secret-key"
-
-# Email (for magic link auth)
-EMAIL_SERVER="smtp://username:password@smtp.example.com:587"
-EMAIL_FROM="noreply@example.com"
-
-# Redis
-REDIS_URL="redis://localhost:6379"
-REDIS_TOKEN=""
-
-# S3/R2 Storage
-S3_ENDPOINT="https://your-account.r2.cloudflarestorage.com"
-S3_REGION="auto"
-S3_BUCKET="timesink-data"
-S3_ACCESS_KEY_ID="your-access-key"
-S3_SECRET_ACCESS_KEY="your-secret-key"
-
-# Security
-MAZE_TOKEN_SECRET="your-maze-token-secret"
-CRON_SECRET="your-cron-secret"
-
-# Optional
-ASN_DB_PATH="/path/to/asn.db"
-```
-
-### 3. Database Setup
+### Development
 ```bash
-pnpm prisma generate
-pnpm prisma db push
-# Or for production:
-pnpm prisma migrate deploy
+npm run dev
 ```
 
-### 4. Development
+### Database Setup
 ```bash
-pnpm dev
-```
-
-Visit `http://localhost:3000` to access the application.
-
-## Deployment
-
-### Recommended Stack
-- **App Hosting**: Vercel
-- **Database**: Neon or Supabase Postgres
-- **Cache**: Upstash Redis
-- **Storage**: Cloudflare R2
-- **Email**: Resend or SendGrid
-
-### Vercel Deployment
-
-1. **Connect Repository**: Import to Vercel dashboard
-
-2. **Environment Variables**: Add all `.env.local` variables to Vercel
-
-3. **Build Settings**: 
-   ```
-   Build Command: pnpm build
-   Output Directory: .next
-   Install Command: pnpm install
-   ```
-
-4. **Cron Job Setup**: Add to `vercel.json`:
-   ```json
-   {
-     "crons": [
-       {
-         "path": "/api/cron/cleanup",
-         "schedule": "0 2 * * *"
-       }
-     ]
-   }
-   ```
-
-### Database Migration
-For production deployments:
-```bash
-pnpm prisma migrate deploy
-```
-
-### S3/R2 Lifecycle Policy
-Configure automatic object deletion as backup:
-```json
-{
-  "Rules": [
-    {
-      "ID": "DeleteAfter7Days",
-      "Status": "Enabled",
-      "Filter": {
-        "Prefix": "sessions/"
-      },
-      "Expiration": {
-        "Days": 7
-      }
-    }
-  ]
-}
+npm run db:generate
+npm run db:push
 ```
 
 ## Usage
 
-### Creating Mazes
+### Creating Custom Mazes
+1. Navigate to the **Maze Builder** from the homepage
+2. Drag trial components from the library to the canvas
+3. Configure each trial's settings in the right panel
+4. Adjust difficulty levels using the numbered buttons
+5. Enable looping if desired
+6. Save your maze for deployment
 
-1. **Sign In**: Use email magic link authentication
-2. **Templates**: Start with pre-built templates or create from scratch
-3. **Builder**: Drag trials, configure difficulty, set up loopbacks
-4. **Publish**: Generate honey URL slug
-5. **Share**: Distribute honey URLs to waste scammer time
+### Trial Configuration
+Each trial type has specific configuration options:
+- **Image Hunt**: Grid size, instructions, minimum time
+- **Drag Sum**: Target sum, number of items, available numbers
+- **Loading Abyss**: Duration, messages, reset on blur
+- **Multi-Layer CAPTCHA**: Step types, difficulty, restart on fail
+- **Slow Reveal**: Reveal time, expected answer, progress steps
 
-### Templates Available
+### Difficulty Levels
+All trials support 5 difficulty levels (1-5):
+- Level 1: Easy, quick completion
+- Level 2: Moderate challenge
+- Level 3: Standard difficulty
+- Level 4: High challenge
+- Level 5: Maximum frustration
 
-- **Invoice Verification**: Classic payment flow (15-25 min)
-- **Account Unlock**: Security verification (20-35 min)  
-- **Prize Claim**: High-frustration prize process (25-45 min)
+## Research Use Only
 
-### Honey URLs
+This platform is designed for scammer deterrence research. Use responsibly and in compliance with applicable laws.
 
-Share links like: `https://yoursite.com/honey/payment-verify-2024`
+## Security Features
 
-Scammers get redirected to: `https://yoursite.com/play/[sessionId]`
-
-### Analytics Dashboard
-
-- Total time wasted across all mazes
-- Session completion rates  
-- Automation detection statistics
-- 30-day activity sparklines
-- Export capabilities for session data
-
-## API Endpoints
-
-### Maze Runtime
-- `POST /api/maze-runtime/next` - Get next trial
-- `POST /api/maze-runtime/verify` - Validate trial answer
-
-### Telemetry  
-- `POST /api/telemetry/heartbeat` - Active time tracking
-- `POST /api/telemetry/rrweb` - Session recording events
-- `POST /api/telemetry/flag` - Automation detection
-
-### Management
-- `GET/POST/PUT /api/mazes` - Maze CRUD operations
-- `GET /api/analytics/summary` - Usage statistics
-- `GET /api/export/session/:id` - Download session data
-
-### Automation
-- `GET /api/cron/cleanup` - Scheduled data cleanup
-
-## Architecture
-
-### Progress Illusion
-- Display: `(actualStepsCompleted % 10) || 10`
-- Reality: 20+ steps required before restart message
-- Restart: ">(1 of 20) answers incorrect, please try again"
-
-### Data Retention
-- **Sessions**: Auto-expire after 7 days
-- **Events**: Linked to session expiration
-- **Artifacts**: S3 objects with lifecycle policy
-- **Cleanup**: Daily cron job + lifecycle backup
-
-### Privacy Design
-- IP addresses bucketed (192.168.1.0/24)
-- User agents hashed (SHA-256, truncated)
-- No cross-session correlation
-- No third-party trackers
-- Clear abuse deterrence notice
-
-## Security
-
-### Token System
-- HMAC-signed step tokens with expiration
-- Session/trial/step validation
-- Automatic token rotation
-
-### Rate Limiting
-- Redis-based request throttling
-- Session creation limits
-- API endpoint protection
-
-### Data Protection
-- No legitimate user PII collected
-- Scammer telemetry only (privacy-preserving)
-- Automatic data expiration
-- S3 bucket security policies
-
-## Ethics & Legal
-
-### Intended Use
-- Scammer time-wasting only
-- Security research and education
-- Abuse deterrence demonstration
-
-### Restrictions
-- No brand impersonation
-- No legitimate service disruption
-- Clear research disclosure required
-- Respect data protection laws
-
-### Footer Required
-All honey pages include: "Abuse-deterrence research; no personal services provided."
+- **Privacy by Design**: 7-day retention, no PII collection
+- **Session Recording**: Full rrweb session replay for analysis
+- **IP Bucketing**: Anonymous IP tracking
+- **Secure Storage**: Encrypted data storage
 
 ## Contributing
 
-### Development Setup
-1. Follow setup instructions above
-2. Create feature branch
-3. Implement with tests
-4. Submit pull request
-
-### Trial Development
-Add new trial types in `components/trials/`:
-1. Create component with required interface
-2. Add to `TrialRenderer.tsx`
-3. Update validation in `lib/validate.ts`
-4. Add to templates if desired
-
-### Code Style
-- TypeScript strict mode
-- ESLint + Prettier
-- Prisma for database
-- Tailwind for styling
+This is a research platform. Please ensure all contributions align with ethical research practices and applicable laws.
 
 ## License
 
-MIT License - See LICENSE file for details.
-
-## Support
-
-For issues, questions, or contributions:
-- GitHub Issues
-- Security issues: security@example.com
-- General questions: hello@example.com
-
----
-
-**Warning**: This software is designed for scammer deterrence only. Use responsibly and in compliance with applicable laws.
+Research use only. No commercial applications permitted.

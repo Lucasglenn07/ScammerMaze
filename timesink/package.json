@@ -40,7 +40,9 @@
     "reactflow": "^11.11.4",
     "lucide-react": "^0.427.0",
     "clsx": "^2.1.1",
-    "tailwind-merge": "^2.4.0"
+    "tailwind-merge": "^2.4.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "@types/react-beautiful-dnd": "^13.1.8"
   },
   "devDependencies": {
     "typescript": "^5",

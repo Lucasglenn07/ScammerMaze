@@ -27,7 +27,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <Link 
               href="/dashboard" 
               className="block p-6 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
@@ -36,6 +36,17 @@ export default function HomePage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Dashboard</h3>
               <p className="text-gray-600 text-sm">
                 View analytics, manage mazes, and track time wasted
+              </p>
+            </Link>
+
+            <Link 
+              href="/build" 
+              className="block p-6 bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+            >
+              <div className="text-purple-600 text-3xl mb-3">🔧</div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Maze Builder</h3>
+              <p className="text-gray-600 text-sm">
+                Create custom mazes with drag-and-drop interface
               </p>
             </Link>
 

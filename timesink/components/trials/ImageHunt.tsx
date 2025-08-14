@@ -71,19 +71,29 @@ export function ImageHunt({ config, onSubmit, onTimeUpdate }: ImageHuntProps) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-semibold mb-2">Image Verification</h2>
-        <p className="text-gray-600">{config.instruction}</p>
+    <div className="max-w-2xl mx-auto p-8 bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="text-center mb-8">
+        <div className="flex items-center justify-center mb-4">
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-semibold text-gray-900">Security Verification</h2>
+        </div>
+        <p className="text-gray-700 text-lg mb-2">{config.instruction}</p>
+        <p className="text-sm text-gray-500">This helps us verify you're not a bot</p>
         {config.minMs && !canSubmit && (
-          <p className="text-sm text-orange-600 mt-2">
-            Please wait a moment before submitting...
-          </p>
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              ⏱️ Please wait a moment before submitting...
+            </p>
+          </div>
         )}
       </div>
 
       <div 
-        className="grid gap-2 mb-6 mx-auto max-w-md"
+        className="grid gap-3 mb-8 mx-auto max-w-lg"
         style={{ 
           gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
           aspectRatio: '1'
@@ -94,13 +104,13 @@ export function ImageHunt({ config, onSubmit, onTimeUpdate }: ImageHuntProps) {
             key={index}
             onClick={() => toggleTile(index)}
             className={`
-              aspect-square border-2 rounded flex items-center justify-center text-lg
-              transition-all duration-200 hover:scale-105
+              aspect-square border-2 rounded-lg flex items-center justify-center text-xl
+              transition-all duration-200 hover:scale-105 hover:shadow-md
               ${selectedTiles.includes(index)
-                ? 'border-blue-500 bg-blue-100 shadow-md'
-                : 'border-gray-300 hover:border-gray-400'
+                ? 'border-blue-500 bg-blue-50 shadow-md'
+                : 'border-gray-200 hover:border-blue-300 bg-gray-50'
               }
-              ${index >= config.tiles ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+              ${index >= config.tiles ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}
             `}
             disabled={index >= config.tiles}
           >
@@ -110,23 +120,31 @@ export function ImageHunt({ config, onSubmit, onTimeUpdate }: ImageHuntProps) {
       </div>
 
       <div className="text-center">
-        <p className="text-sm text-gray-500 mb-4">
-          Selected: {selectedTiles.length} tile{selectedTiles.length !== 1 ? 's' : ''}
-        </p>
+        <div className="flex items-center justify-center mb-6">
+          <div className="bg-gray-100 rounded-full px-4 py-2">
+            <span className="text-sm font-medium text-gray-700">
+              Selected: {selectedTiles.length} tile{selectedTiles.length !== 1 ? 's' : ''}
+            </span>
+          </div>
+        </div>
         
         <button
           onClick={handleSubmit}
           disabled={(!canSubmit && config.minMs) || selectedTiles.length === 0}
           className={`
-            px-6 py-2 rounded font-medium transition-all duration-200
+            px-8 py-3 rounded-lg font-medium transition-all duration-200 text-lg
             ${(!canSubmit && config.minMs) || selectedTiles.length === 0
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700 hover:scale-105'
+              : 'bg-blue-600 text-white hover:bg-blue-700 hover:shadow-lg transform hover:scale-105'
             }
           `}
         >
-          Verify Selection
+          Continue Verification
         </button>
+        
+        <p className="text-xs text-gray-400 mt-3">
+          Your security is our priority
+        </p>
       </div>
     </div>
   );
