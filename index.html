@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScammerMaze - The Ultimate Time Sink</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gameContainer">
+        <header class="game-header">
+            <h1 class="game-title">SCAMMER MAZE</h1>
+            <p class="game-subtitle">The Ultimate Time Sink Challenge</p>
+            <div class="stats-container">
+                <div class="stat">
+                    <span class="stat-label">Time Wasted:</span>
+                    <span id="timeWasted" class="stat-value">00:00</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Level:</span>
+                    <span id="currentLevel" class="stat-value">1</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Score:</span>
+                    <span id="score" class="stat-value">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="game-area">
+            <div id="gameBoard">
+                <canvas id="mazeCanvas" width="800" height="600"></canvas>
+                <div id="gameOverlay" class="overlay hidden">
+                    <div class="overlay-content">
+                        <h2 id="overlayTitle">Get Ready!</h2>
+                        <p id="overlayMessage">Navigate through the maze to reach the exit...</p>
+                        <button id="startButton" class="game-button">Start Game</button>
+                        <button id="nextLevelButton" class="game-button hidden">Next Level</button>
+                        <button id="restartButton" class="game-button hidden">Try Again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="control-section">
+                    <h3>Controls</h3>
+                    <div class="control-grid">
+                        <div class="control-item">
+                            <span class="key">↑</span>
+                            <span class="action">Move Up</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">↓</span>
+                            <span class="action">Move Down</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">←</span>
+                            <span class="action">Move Left</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">→</span>
+                            <span class="action">Move Right</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>Game Settings</h3>
+                    <div class="setting-item">
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy (More Time Wasted)</option>
+                            <option value="medium" selected>Medium (Optimal Waste)</option>
+                            <option value="hard">Hard (Maximum Frustration)</option>
+                            <option value="impossible">Impossible (Pure Evil)</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="mazeSize">Maze Size:</label>
+                        <select id="mazeSize">
+                            <option value="small">Small (15x15)</option>
+                            <option value="medium" selected>Medium (25x25)</option>
+                            <option value="large">Large (35x35)</option>
+                            <option value="massive">Massive (50x50)</option>
+                        </select>
+                    </div>
+                    <button id="newGameButton" class="game-button">New Game</button>
+                </div>
+
+                <div class="control-section">
+                    <h3>Trap Features</h3>
+                    <div class="trap-list">
+                        <div class="trap-item">
+                            <span class="trap-icon">🕳️</span>
+                            <span class="trap-name">False Exits</span>
+                        </div>
+                        <div class="trap-item">
+                            <span class="trap-icon">🌀</span>
+                            <span class="trap-name">Teleport Traps</span>
+                        </div>
+                        <div class="trap-item">
+                            <span class="trap-icon">⏱️</span>
+                            <span class="trap-name">Time Delays</span>
+                        </div>
+                        <div class="trap-item">
+                            <span class="trap-icon">🔄</span>
+                            <span class="trap-name">Maze Shifts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="game-footer">
+            <p class="footer-text">Built to waste scammers' precious time. Every second counts! 😈</p>
+            <div class="footer-stats">
+                <span>Global Time Wasted: <span id="globalTimeWasted">∞</span></span>
+                <span>Scammers Frustrated: <span id="scammersFrustrated">9,999+</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="maze.js"></script>
+    <script src="game.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

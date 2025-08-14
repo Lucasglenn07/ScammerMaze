@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  emailVerified   Boolean  @default(false)
+  verificationToken String?
+  verificationTokenExpires DateTime?
+  resetToken      String?
+  resetTokenExpires DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  mazes           Maze[]
+  statsDaily      StatsDaily[]
+}
+
+model Maze {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  status    String   @default("draft") // draft|published
+  channel   String   @default("web")
+  settings  Json
+  slug      String?  @unique
+  trials    Trial[]
+  edges     Edge[]
+  sessions  Session[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Trial {
+  id        String   @id @default(cuid())
+  mazeId    String
+  maze      Maze     @relation(fields: [mazeId], references: [id], onDelete: Cascade)
+  kind      String   // see trial kinds below
+  position  Int
+  config    Json
+  createdAt DateTime @default(now())
+}
+
+model Edge {
+  id          String   @id @default(cuid())
+  mazeId      String
+  maze        Maze     @relation(fields: [mazeId], references: [id], onDelete: Cascade)
+  fromTrialId String
+  toTrialId   String
+  condition   Json     // branching conditions
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  mazeId      String
+  maze        Maze     @relation(fields: [mazeId], references: [id], onDelete: Cascade)
+  channel     String   @default("web")
+  startedAt   DateTime @default(now())
+  lastSeenAt  DateTime @default(now())
+  status      String   @default("active") // active|abandoned|restarted|expired
+  asn         Int?
+  ipCidr24    String?
+  uaHash      String?
+  countryCode String?
+  actualStepsCompleted Int @default(0)
+  expiresAt   DateTime  // startedAt + 7 days
+  events      Event[]
+  artifacts   Artifact[]
+  flags       Flag[]
+}
+
+model Event {
+  id         String   @id @default(cuid())
+  sessionId  String
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trialId    String?
+  startedAt  DateTime
+  endedAt    DateTime
+  outcome    String    // success|fail|timeout|abandon
+  durationMs Int
+  hintsUsed  Int       @default(0)
+  retries    Int       @default(0)
+  meta       Json?
+  expiresAt  DateTime
+}
+
+model Artifact {
+  id         String   @id @default(cuid())
+  sessionId  String
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  trialId    String?
+  kind       String   // rrweb_blob | audio | generated_asset | answer_snapshot
+  uri        String
+  sizeBytes  Int
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+}
+
+model Flag {
+  id         String   @id @default(cuid())
+  sessionId  String
+  session    Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  reason     String   // automation_suspected | repeat_asn | solver_api_pattern | decoy_clicked
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+}
+
+model StatsDaily {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date        DateTime
+  sessions    Int
+  activeMs    BigInt
+  completions Int
+  avgTrialMs  Int
+  botRate     Float
+
+  @@unique([userId, date])
+}
